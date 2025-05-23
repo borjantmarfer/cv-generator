@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import { RootLayout } from "../layouts/RootLayout";
 import { Home } from "../pages/Home";
-import { TemplateGenerator } from "@/pages/templateGenerator/TemplateGenerator";
+import { TemplateGenerator } from "@/pages/TemplateGenerator";
 
 export const Router = createBrowserRouter([
     {

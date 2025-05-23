@@ -3,6 +3,7 @@ import * as yup from 'yup';
 import { i18n } from '@/lang';
 import {
     Box,
+    CircularProgress,
     Grid,
     IconButton,
     Tooltip,
@@ -10,13 +11,15 @@ import {
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import type { FieldsInterface } from '@/shared/interfaces/FieldsInterface';
-import { PersonalData } from './PersonalData';
-import { Skills } from './Skills';
-import { useState } from 'react';
+import { PersonalData } from './templateGenerator/PersonalData';
+import { Skills } from './templateGenerator/Skills';
+import { useEffect, useState } from 'react';
 import { ChevronRight } from '@mui/icons-material';
-import { Education } from './Education';
-import { ProfesionalExperience } from './ProfessionalExperience';
-import { LastConfig } from './LastConfig';
+import { Education } from './templateGenerator/Education';
+import { ProfesionalExperience } from './templateGenerator/ProfessionalExperience';
+import { LastConfig } from './templateGenerator/LastConfig';
+import { getFormData, saveFormData } from '@/services/indexedDB';
+import { deserializeFormData, serializeFormData } from '@/shared/utils/formDataTransform';
 
 const validationSchema = yup.object({
     fullName: yup.string().required(i18n.required),
@@ -26,10 +29,9 @@ const validationSchema = yup.object({
     about: yup.string().required(i18n.required),
 });
 
-const initialValues: FieldsInterface = {
+const initialFormValues: FieldsInterface = {
     img: '',
     fullName: '',
-    position: '',
     phone: '',
     email: '',
     address: '',
@@ -42,16 +44,43 @@ const initialValues: FieldsInterface = {
 
 export const TemplateGenerator = () => {
     const [openNext, setOpenNext] = useState<boolean>(false);
+    const [initialValues, setInitialValues] = useState<FieldsInterface>(initialFormValues);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const params = useParams();
 
+    useEffect(() => {
+        const loadData = async () => {
+            const storedData = await getFormData();
+            if (storedData) {
+                const parsedData = deserializeFormData(storedData);
+                setInitialValues(parsedData);
+            }
+            setIsLoading(false);
+        };
+        loadData();
+    }, []);
+
     const formik = useFormik({
+        enableReinitialize: true,
         initialValues,
         validationSchema,
-        onSubmit: (values) => {
-            console.log('Form submitted', values);
+        onSubmit: async (values) => {
+            try {
+                const serializableData = serializeFormData(values);
+                await saveFormData(serializableData);
+            } catch (error) {
+                console.error('Error al guardar datos en IndexedDB:', error);
+            }
         },
     });
 
+    if (isLoading) {
+        return (
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
+                <CircularProgress color='primary' />
+            </Box>
+        );
+    }
 
     return (
         <form onSubmit={formik.handleSubmit} style={{ width: '100%', height: '100%', position: 'relative' }}>

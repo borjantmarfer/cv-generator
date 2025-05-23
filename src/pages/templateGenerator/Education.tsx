@@ -42,7 +42,14 @@ export const Education = ({ formik }: { formik: FormikProps<FieldsInterface> }) 
                 .required(i18n.required),
         }),
         onSubmit: (values) => {
-            const newEducation = [...formik.values.education, values];
+            const newEducation = [
+                ...formik.values.education,
+                {
+                    ...values,
+                    fromDate: values.fromDate?.toISOString(),
+                    toDate: values.toDate?.toISOString(),
+                },
+            ];
             formik.setFieldValue("education", newEducation);
             setOpenAnchorEl(null);
             addEducationFormik.resetForm();

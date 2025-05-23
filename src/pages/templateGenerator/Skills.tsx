@@ -124,16 +124,8 @@ export const Skills = ({ formik }: { formik: FormikProps<FieldsInterface> }) => 
                         <Typography variant="body2" sx={{ wordBreak: "break-word" }}>
                             {skill}
                         </Typography>
-                        <IconButton
-                            size="small"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                handleDeleteSkill(index);
-                            }}
-                            aria-label={i18n.remove}
-                        >
-                            <Cancel />
-                        </IconButton>
+
+                        <Cancel />
                     </ButtonBase>
                 ))}
             </Box>
