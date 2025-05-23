@@ -1,0 +1,155 @@
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { i18n } from '@/lang';
+import {
+    Box,
+    Grid,
+    IconButton,
+    Tooltip,
+    darken,
+} from '@mui/material';
+import { useParams } from 'react-router-dom';
+import type { FieldsInterface } from '@/shared/interfaces/FieldsInterface';
+import { PersonalData } from './PersonalData';
+import { Skills } from './Skills';
+import { useState } from 'react';
+import { ChevronRight } from '@mui/icons-material';
+import { Education } from './Education';
+import { ProfesionalExperience } from './ProfessionalExperience';
+import { LastConfig } from './LastConfig';
+
+const validationSchema = yup.object({
+    fullName: yup.string().required(i18n.required),
+    phone: yup.string().required(i18n.required),
+    email: yup.string().email(i18n.invalidEmail).required(i18n.required),
+    address: yup.string().required(i18n.required),
+    about: yup.string().required(i18n.required),
+});
+
+const initialValues: FieldsInterface = {
+    img: '',
+    fullName: '',
+    position: '',
+    phone: '',
+    email: '',
+    address: '',
+    about: '',
+    education: [],
+    skills: [],
+    experiences: [],
+    mainColor: '',
+};
+
+export const TemplateGenerator = () => {
+    const [openNext, setOpenNext] = useState<boolean>(false);
+    const params = useParams();
+
+    const formik = useFormik({
+        initialValues,
+        validationSchema,
+        onSubmit: (values) => {
+            console.log('Form submitted', values);
+        },
+    });
+
+
+    return (
+        <form onSubmit={formik.handleSubmit} style={{ width: '100%', height: '100%', position: 'relative' }}>
+            <Box
+                sx={(theme) => ({
+                    position: 'relative',
+                    height: '100%',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    gap: theme.spacing(2)
+                })}
+            >
+                <Box
+                    sx={(theme) => ({
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        transition: theme.transitions.create('transform', {
+                            duration: theme.transitions.duration.standard,
+                            easing: theme.transitions.easing.easeInOut,
+                        }),
+                        transform: openNext ? 'translateX(-110%)' : 'translateX(0)',
+                    })}
+                >
+                    <Grid container spacing={2} sx={{ width: '100%', height: '100%' }}>
+                        <Grid size={{ xs: 12, md: 7 }}>
+                            <PersonalData formik={formik} />
+                        </Grid>
+
+                        <Grid size={{ xs: 12, md: 5 }}>
+                            <Skills formik={formik} />
+                        </Grid>
+                    </Grid>
+                </Box>
+
+                <Box
+                    sx={(theme) => ({
+                        position: 'absolute',
+                        top: 0,
+                        left: '100%',
+                        width: '100%',
+                        height: '100%',
+                        transition: theme.transitions.create('transform', {
+                            duration: theme.transitions.duration.standard,
+                            easing: theme.transitions.easing.easeInOut,
+                        }),
+                        transform: openNext ? 'translateX(-100%)' : 'translateX(0)',
+                    })}
+                >
+                    <Grid container spacing={2} sx={{ width: '100%', height: '100%' }}>
+                        <Grid size={{ xs: 12, md: 4 }} sx={{ maxHeight: '100%' }}>
+                            <Education formik={formik} />
+                        </Grid>
+
+                        <Grid size={{ xs: 12, md: 5 }} sx={{ maxHeight: '100%' }}>
+                            <ProfesionalExperience formik={formik} />
+                        </Grid>
+                        <Grid size={{ xs: 12, md: 3 }} sx={{ maxHeight: '100%' }}>
+                            <LastConfig formik={formik} />
+                        </Grid>
+                    </Grid>
+                </Box>
+            </Box>
+
+            {/* Botón con color y hover con oscurecimiento */}
+            <Tooltip title={openNext ? i18n.previous : i18n.next}>
+                <IconButton
+                    onClick={() => setOpenNext(!openNext)}
+                    sx={(theme) => ({
+                        position: 'absolute',
+                        bottom: 16,
+                        right: -12,
+                        backgroundColor: theme.palette.primary.main,
+                        color: theme.palette.getContrastText(theme.palette.primary.main),
+                        boxShadow: 3,
+                        transition: theme.transitions.create(['background-color', 'bottom'], {
+                            duration: theme.transitions.duration.standard,
+                            easing: theme.transitions.easing.easeInOut,
+                        }),
+                        '&:hover': {
+                            backgroundColor: darken(theme.palette.primary.main, 0.1),
+                        },
+                    })}
+                >
+                    <ChevronRight
+                        sx={(theme) => ({
+                            transform: openNext ? 'rotate(180deg)' : 'rotate(0deg)',
+                            transition: theme.transitions.create('transform', {
+                                duration: theme.transitions.duration.standard,
+                                easing: theme.transitions.easing.easeInOut,
+                            }),
+                            fontSize: 40,
+                        })}
+                    />
+                </IconButton>
+            </Tooltip>
+        </form>
+    );
+};

@@ -1,0 +1,84 @@
+import LocalizedStrings from "react-localization";
+
+export const i18n = new LocalizedStrings({
+    es: {
+        generateCV: 'Generar CV',
+
+        add: 'Añadir',
+        cancel: 'Cancelar',
+        remove: 'Eliminar',
+
+        description: 'Descripción',
+        fromDate: 'Desde fecha',
+        toDate: 'Hasta fecha',
+        toDateAfterFromDate: 'La fecha final debe ser posterior a la inicial',
+        selectAColor: 'Selecciona un color',
+
+        next: 'Siguiente',
+        previous: 'Anterior',
+        speak: 'Introducir vía audio',
+        uploadImage: 'Subir imagen',
+        personalData: 'Datos personales',
+        fullName: 'Nombre completo',
+        phone: 'Teléfono',
+        email: 'Correo electrónico',
+        address: 'Dirección',
+        aboutMe: 'Sobre mí',
+        education: 'Educación',
+        titulation: 'Titulation',
+        addEducation: 'Añadir educación',
+        removeEducation: 'Eliminar educación',
+        skills: 'Habilidades',
+        addSkill: 'Añadir habilidad',
+        professionalExperience: 'Experiencia profesional',
+        addProfesionalExperience: 'Añadir experiencia profesional',
+        removeProfessionalExperience: 'Eliminar experiencia profesional',
+        jobTitle: 'Cargo laboral',
+        enterprise: 'Empresa',
+
+        //#region Error
+        required: 'Campo requerido',
+        invalidEmail: 'Formato de correo electrónico incorrecto'
+        //#endRegion
+    },
+    en: {
+        generateCV: 'Generate CV',
+
+        add: 'Add',
+        cancel: 'Cancel',
+        remove: 'Remove',
+
+        description: 'Description',
+        fromDate: 'From date',
+        toDate: 'To date',
+        toDateAfterFromDate: 'The final date must be after the initial date',
+        selectAColor: 'Select a color',
+
+        next: 'Next',
+        previous: 'Previous',
+        speak: 'Speak via audio',
+        uploadImage: 'Upload image',
+        personalData: 'Personal data',
+        fullName: 'Full name',
+        phone: 'Phone',
+        email: 'Email',
+        address: 'Address',
+        aboutMe: 'About Me',
+        education: 'Education',
+        titulation: 'Titulation',
+        addEducation: 'Add education',
+        removeEducation: 'Remove education',
+        skills: 'Skills',
+        addSkill: 'Add skill',
+        professionalExperience: 'Professional experience',
+        addProfesionalExperience: 'Add professional experience',
+        removeProfessionalExperience: 'Remove professional experience',
+        jobTitle: 'Job title',
+        enterprise: 'Enterprise',
+
+        //#region Error
+        required: 'Required field',
+        invalidEmail: 'Invalid email format'
+        //#endRegion
+    },
+});
