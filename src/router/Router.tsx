@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import { RootLayout } from "../layouts/RootLayout";
 import { Home } from "../pages/Home";
 import { TemplateGenerator } from "@/pages/TemplateGenerator";
+import { Template } from "@/pages/Template";
 
 export const Router = createBrowserRouter([
     {
@@ -14,9 +15,13 @@ export const Router = createBrowserRouter([
                 element: <Home />,
             },
             {
-                path: 'template/:id',
-                element: <TemplateGenerator />
-            }
+                path: 'generator/:id?',
+                element: <TemplateGenerator />,
+            },
+            {
+                path: 'generator/:id/templates',
+                element: <Template />,
+            },
         ],
     },
     {

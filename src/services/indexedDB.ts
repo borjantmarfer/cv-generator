@@ -1,4 +1,3 @@
-// src/services/indexedDb.ts
 import { openDB } from 'idb';
 import type { FieldsInterface } from '@/shared/interfaces/FieldsInterface';
 
@@ -17,10 +16,24 @@ export const getDB = async () => {
 
 export const saveFormData = async (data: FieldsInterface) => {
     const db = await getDB();
-    await db.put(STORE_NAME, { ...data, id: 'current' });
+    if (!data.id || data.id === '') {
+        const allKeys = await db.getAllKeys(STORE_NAME);
+        const numericIds = allKeys
+            .map(key => typeof key === 'string' && /^\d+$/.test(key) ? Number(key) : null)
+            .filter((key): key is number => key !== null);
+        const nextId = numericIds.length > 0 ? Math.max(...numericIds) + 1 : 1;
+        data.id = String(nextId);
+    }
+    await db.put(STORE_NAME, { ...data, id: data.id });
+    return await db.get(STORE_NAME, data.id);
 };
 
 export const getFormData = async (): Promise<FieldsInterface | undefined> => {
     const db = await getDB();
     return await db.get(STORE_NAME, 'current');
 };
+
+export const getFormDataById = async (id: string): Promise<FieldsInterface | undefined> => {
+    const db = await getDB();
+    return await db.get(STORE_NAME, id);
+}

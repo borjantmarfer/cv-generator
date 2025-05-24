@@ -1,38 +1,31 @@
 import dayjs from 'dayjs';
 import type { EducationInterface, ExperienceInterface, FieldsInterface } from '../interfaces/FieldsInterface';
 
-type SerializableEducation = Omit<EducationInterface, 'fromDate' | 'toDate'> & {
-    fromDate: string;
-    toDate: string;
-};
-
-type SerializableExperience = Omit<ExperienceInterface, 'fromDate' | 'toDate'> & {
-    fromDate: string;
-    toDate: string;
-};
-
-type SerializableFieldsInterface = Omit<FieldsInterface, 'education' | 'experiences'> & {
-    education: SerializableEducation[];
-    experiences: SerializableExperience[];
-};
-
 // Convertir Dayjs → string
-export const serializeFormData = (data: FieldsInterface): SerializableFieldsInterface => ({
+export const serializeFormData = (data: FieldsInterface): FieldsInterface => ({
     ...data,
-    education: data.education.map(ed => ({
+    education: data.education.map((ed: EducationInterface) => ({
         ...ed,
-        fromDate: ed.fromDate.toISOString(),
-        toDate: ed.toDate.toISOString(),
-    })),
-    experiences: data.experiences.map(exp => ({
+        fromDate: typeof ed.fromDate === 'object' && 'toISOString' in ed.fromDate
+            ? ed.fromDate.toISOString()
+            : ed.fromDate,
+        toDate: typeof ed.toDate === 'object' && 'toISOString' in ed.toDate
+            ? ed.toDate.toISOString()
+            : ed.toDate,
+    } as unknown as EducationInterface)),
+    experiences: data.experiences.map((exp: ExperienceInterface) => ({
         ...exp,
-        fromDate: exp.fromDate.toISOString(),
-        toDate: exp.toDate.toISOString(),
-    })),
+        fromDate: typeof exp.fromDate === 'object' && 'toISOString' in exp.fromDate
+            ? exp.fromDate.toISOString()
+            : exp.fromDate,
+        toDate: typeof exp.toDate === 'object' && 'toISOString' in exp.toDate
+            ? exp.toDate.toISOString()
+            : exp.toDate,
+    } as unknown as ExperienceInterface)),
 });
 
 // Convertir string → Dayjs
-export const deserializeFormData = (data: SerializableFieldsInterface): FieldsInterface => ({
+export const deserializeFormData = (data: FieldsInterface): FieldsInterface => ({
     ...data,
     education: data.education.map(ed => ({
         ...ed,

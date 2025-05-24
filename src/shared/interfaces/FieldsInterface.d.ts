@@ -16,6 +16,7 @@ export interface ExperienceInterface {
 }
 
 export interface FieldsInterface {
+    id?: string
     img: string
     fullName: string
     phone: string

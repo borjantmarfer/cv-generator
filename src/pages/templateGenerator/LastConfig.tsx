@@ -48,7 +48,11 @@ export const LastConfig = ({ formik }: { formik: FormikProps<FieldsInterface> })
                 />
             </Paper>
             <Button
-                onClick={() => formik.handleSubmit()}
+                onClick={() => {
+                    console.log("Touched:", formik.touched);
+                    console.log("Errors:", formik.errors);
+                    formik.handleSubmit();
+                }}
                 size="large"
                 fullWidth
                 variant="contained"

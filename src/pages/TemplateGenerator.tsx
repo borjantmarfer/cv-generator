@@ -9,7 +9,6 @@ import {
     Tooltip,
     darken,
 } from '@mui/material';
-import { useParams } from 'react-router-dom';
 import type { FieldsInterface } from '@/shared/interfaces/FieldsInterface';
 import { PersonalData } from './templateGenerator/PersonalData';
 import { Skills } from './templateGenerator/Skills';
@@ -18,39 +17,30 @@ import { ChevronRight } from '@mui/icons-material';
 import { Education } from './templateGenerator/Education';
 import { ProfesionalExperience } from './templateGenerator/ProfessionalExperience';
 import { LastConfig } from './templateGenerator/LastConfig';
-import { getFormData, saveFormData } from '@/services/indexedDB';
+import { getFormDataById, saveFormData } from '@/services/indexedDB';
 import { deserializeFormData, serializeFormData } from '@/shared/utils/formDataTransform';
+import { useNavigate, useParams } from 'react-router-dom';
+import { initialFormValues } from '@/shared/initialValues';
 
 const validationSchema = yup.object({
     fullName: yup.string().required(i18n.required),
     phone: yup.string().required(i18n.required),
     email: yup.string().email(i18n.invalidEmail).required(i18n.required),
     address: yup.string().required(i18n.required),
-    about: yup.string().required(i18n.required),
+    about: yup.string().nullable(),
 });
-
-const initialFormValues: FieldsInterface = {
-    img: '',
-    fullName: '',
-    phone: '',
-    email: '',
-    address: '',
-    about: '',
-    education: [],
-    skills: [],
-    experiences: [],
-    mainColor: '',
-};
 
 export const TemplateGenerator = () => {
     const [openNext, setOpenNext] = useState<boolean>(false);
     const [initialValues, setInitialValues] = useState<FieldsInterface>(initialFormValues);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const params = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const loadData = async () => {
-            const storedData = await getFormData();
+            const storedData = await getFormDataById(params.id || '');
             if (storedData) {
                 const parsedData = deserializeFormData(storedData);
                 setInitialValues(parsedData);
@@ -58,7 +48,7 @@ export const TemplateGenerator = () => {
             setIsLoading(false);
         };
         loadData();
-    }, []);
+    }, [params.id]);
 
     const formik = useFormik({
         enableReinitialize: true,
@@ -67,7 +57,16 @@ export const TemplateGenerator = () => {
         onSubmit: async (values) => {
             try {
                 const serializableData = serializeFormData(values);
-                await saveFormData(serializableData);
+                const result = await saveFormData(serializableData);
+                if (result !== undefined && result !== null) {
+                    if (values.id) {
+                        navigate(`templates`);
+                    } else {
+                        navigate(`${result.id}/template`);
+                    }
+                } else {
+                    console.log('Datos guardados en IndexedDB, pero no se recibió un ID.');
+                }
             } catch (error) {
                 console.error('Error al guardar datos en IndexedDB:', error);
             }

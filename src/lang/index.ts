@@ -3,6 +3,8 @@ import LocalizedStrings from "react-localization";
 export const i18n = new LocalizedStrings({
     es: {
         generateCV: 'Generar CV',
+        templates: 'Plantillas',
+        selectTemplate: 'Selecciona una plantilla',
 
         add: 'Añadir',
         cancel: 'Cancelar',
@@ -38,11 +40,15 @@ export const i18n = new LocalizedStrings({
 
         //#region Error
         required: 'Campo requerido',
-        invalidEmail: 'Formato de correo electrónico incorrecto'
+        invalidEmail: 'Formato de correo electrónico incorrecto',
         //#endRegion
+
+        comingSoon: 'Próximamente',
     },
     en: {
         generateCV: 'Generate CV',
+        templates: 'Templates',
+        selectTemplate: 'Select a template',
 
         add: 'Add',
         cancel: 'Cancel',
@@ -78,7 +84,9 @@ export const i18n = new LocalizedStrings({
 
         //#region Error
         required: 'Required field',
-        invalidEmail: 'Invalid email format'
+        invalidEmail: 'Invalid email format',
         //#endRegion
+
+        comingSoon: 'Coming soon',
     },
 });
