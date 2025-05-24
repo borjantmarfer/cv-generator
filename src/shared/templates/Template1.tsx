@@ -6,10 +6,10 @@ import { useTheme } from "@mui/material";
 import { getLightVersionColor } from "../utils/colorUtils";
 import dayjs from "dayjs";
 
-import RobotoRegular from '@/../public/fonts/Roboto/Roboto-Regular.ttf';
-import RobotoBold from '@/../public/fonts/Roboto/Roboto-Bold.ttf';
-import RobotoItalic from '@/../public/fonts/Roboto/Roboto-Italic.ttf';
-import RobotoBoldItalic from '@/../public/fonts/Roboto/Roboto-BoldItalic.ttf';
+import RobotoRegular from '/fonts/Roboto/Roboto-Regular.ttf';
+import RobotoBold from '/fonts/Roboto/Roboto-Bold.ttf';
+import RobotoItalic from '/fonts/Roboto/Roboto-Italic.ttf';
+import RobotoBoldItalic from '/fonts/Roboto/Roboto-BoldItalic.ttf';
 
 Font.register({
     family: 'Roboto',
@@ -126,6 +126,7 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                         bottom: 0,
                         height: 20,
                         backgroundColor: primaryColor,
+                        borderRadius: 5,
                         zIndex: 10,
                     }}
                     fixed
@@ -199,6 +200,7 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                             width: '100%',
                             padding: 10,
                             backgroundColor: primaryColor,
+                            borderRadius: 5,
                             textAlign: 'center',
                             color: theme.palette.getContrastText(primaryColor)
                         }}>
@@ -211,7 +213,7 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                         width: '100%',
                         display: 'flex',
                         flexDirection: 'row',
-                        gap: 10,
+                        gap: 5,
                     }}>
                         <View style={{
                             flex: 1,
@@ -224,6 +226,8 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                                 width: '100%',
                                 padding: 10,
                                 backgroundColor: primaryColor,
+                                borderTopLeftRadius: 5,
+                                borderBottomLeftRadius: 5,
                                 textAlign: 'center',
                                 color: theme.palette.getContrastText(primaryColor)
                             }}>
@@ -260,6 +264,8 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                                 width: '100%',
                                 padding: 10,
                                 backgroundColor: primaryColor,
+                                borderTopRightRadius: 5,
+                                borderBottomRightRadius: 5,
                                 textAlign: 'center',
                                 color: theme.palette.getContrastText(primaryColor)
                             }}>
@@ -288,6 +294,7 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                             width: '100%',
                             padding: 10,
                             backgroundColor: primaryColorLight,
+                            borderRadius: 5,
                             textAlign: 'center',
                             color: theme.palette.getContrastText(primaryColorLight)
                         }}>

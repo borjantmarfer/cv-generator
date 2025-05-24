@@ -64,7 +64,6 @@ const theme = createTheme({
 
 })
 
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <LocalizationProvider dateAdapter={AdapterDayjs}>

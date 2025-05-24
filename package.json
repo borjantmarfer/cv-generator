@@ -16,6 +16,7 @@
     "@mui/material": "^7.1.0",
     "@mui/x-date-pickers": "^8.4.0",
     "@react-pdf/renderer": "^4.3.0",
+    "D": "^1.0.0",
     "color": "^5.0.0",
     "dayjs": "^1.11.13",
     "formik": "^2.4.6",
@@ -41,6 +42,7 @@
     "globals": "^16.0.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.30.1",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vite-plugin-compression": "^0.5.1"
   }
 }

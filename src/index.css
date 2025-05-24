@@ -15,28 +15,28 @@
 
 @font-face {
   font-family: 'Roboto';
-  src: url('../public/fonts//Roboto/Roboto-Regular.ttf') format('truetype');
+  src: url('/fonts//Roboto/Roboto-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Roboto';
-  src: url('../public/fonts/Roboto/Roboto-Bold.ttf') format('truetype');
+  src: url('/fonts/Roboto/Roboto-Bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Roboto';
-  src: url('../public/fonts/Roboto/Roboto-Italic.ttf') format('truetype');
+  src: url('/fonts/Roboto/Roboto-Italic.ttf') format('truetype');
   font-weight: normal;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'Roboto';
-  src: url('../public/fonts/Roboto/') format('truetype');
+  src: url('/fonts/Roboto/') format('truetype');
   font-weight: bold;
   font-style: italic;
 }
