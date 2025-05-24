@@ -13,6 +13,8 @@ import {
     Accordion,
     AccordionSummary,
     AccordionDetails,
+    FormControlLabel,
+    Checkbox,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import type { FormikProps } from "formik";
@@ -29,8 +31,6 @@ export const Education = ({ formik }: { formik: FormikProps<FieldsInterface> }) 
         initialValues: {
             titulation: "",
             description: "",
-            fromDate: dayjs(),
-            toDate: dayjs(),
         },
         validationSchema: yup.object({
             titulation: yup.string().required(i18n.required),
@@ -38,8 +38,8 @@ export const Education = ({ formik }: { formik: FormikProps<FieldsInterface> }) 
             fromDate: yup.date().required(i18n.required),
             toDate: yup
                 .date()
-                .min(yup.ref("fromDate"), i18n.toDateAfterFromDate || "La fecha final debe ser posterior a la inicial")
-                .required(i18n.required),
+                .nullable(),
+            stillStudying: yup.boolean().default(false),
         }),
         onSubmit: (values) => {
             const newEducation = [
@@ -118,7 +118,7 @@ export const Education = ({ formik }: { formik: FormikProps<FieldsInterface> }) 
                                     </IconButton>
                                 </Tooltip>
                                 <Typography variant="body2" fontStyle="italic" fontWeight={'bold'}>
-                                    {`${dayjs(edu.fromDate).locale(i18n.getLanguage()).format("MMMM, YYYY")} - ${dayjs(edu.toDate).locale(i18n.getLanguage()).format("MMMM, YYYY")}`}
+                                    {`${dayjs(edu.fromDate).locale(i18n.getLanguage()).format("MMMM, YYYY")} - ${edu.stillStudying ? i18n.present : dayjs(edu.toDate).locale(i18n.getLanguage()).format("MMMM, YYYY")}`}
                                 </Typography>
                                 <Typography variant="body1" >{edu.description}</Typography>
                             </Box>
@@ -178,6 +178,23 @@ export const Education = ({ formik }: { formik: FormikProps<FieldsInterface> }) 
                         value={addEducationFormik.values.toDate}
                         disableFuture
                         onChange={(date) => addEducationFormik.setFieldValue("toDate", date)}
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                name="stillStudying"
+                                value={addEducationFormik.values.stillStudying}
+                                checked={addEducationFormik.values.toDate === null}
+                                onChange={(e) => {
+                                    const checked = e.target.checked;
+                                    addEducationFormik.setFieldValue("stillStudying", checked);
+                                    addEducationFormik.setFieldValue("toDate", checked ? null : dayjs());
+
+                                }}
+                                onBlur={addEducationFormik.handleBlur}
+                            />
+                        }
+                        label={i18n.stillStudying || "Actualmente estudiando"}
                     />
 
                     <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>

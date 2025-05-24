@@ -8,8 +8,6 @@ import type { FormikProps } from "formik"
 
 export const PersonalData = ({ formik }: { formik: FormikProps<FieldsInterface> }) => {
 
-
-
     return (
         <Paper sx={(theme) => ({
             width: '100%',
@@ -72,7 +70,17 @@ export const PersonalData = ({ formik }: { formik: FormikProps<FieldsInterface> 
                     />
                 </Box>
             </Box>
-
+            <TextField
+                name="jobTitle"
+                label={i18n.jobTitle}
+                fullWidth
+                variant="outlined"
+                value={formik.values.jobTitle}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.jobTitle && Boolean(formik.errors.jobTitle)}
+                helperText={formik.touched.jobTitle && formik.errors.jobTitle}
+            />
 
             <SpeechRecognitionTextField
                 name="about"

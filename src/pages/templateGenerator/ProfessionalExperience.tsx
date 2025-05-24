@@ -1,6 +1,8 @@
 import { i18n } from "@/lang";
 import type { FieldsInterface, ExperienceInterface } from "@/shared/interfaces/FieldsInterface";
 import { Add, Delete } from "@mui/icons-material";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import {
     Box,
     IconButton,
@@ -25,13 +27,11 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 export const ProfesionalExperience = ({ formik }: { formik: FormikProps<FieldsInterface> }) => {
     const [openAnchorEl, setOpenAnchorEl] = useState<HTMLElement | null>(null);
 
-    const addEducationFormik = useFormik<ExperienceInterface>({
+    const addExperienceFormik = useFormik<ExperienceInterface>({
         initialValues: {
             title: "",
             companyName: "",
             description: "",
-            fromDate: dayjs(),
-            toDate: dayjs(),
         },
         validationSchema: yup.object({
             title: yup.string().required(i18n.required),
@@ -40,17 +40,17 @@ export const ProfesionalExperience = ({ formik }: { formik: FormikProps<FieldsIn
             fromDate: yup.date().required(i18n.required),
             toDate: yup
                 .date()
-                .min(yup.ref("fromDate"), i18n.toDateAfterFromDate || "La fecha final debe ser posterior a la inicial")
-                .required(i18n.required),
+                .nullable(),
+            stillWorking: yup.boolean().default(false),
         }),
         onSubmit: (values) => {
             const newEducation = [...formik.values.experiences, values];
             formik.setFieldValue("experiences", newEducation);
             setOpenAnchorEl(null);
-            addEducationFormik.resetForm();
+            addExperienceFormik.resetForm();
         },
     });
-
+    console.log(formik.values.experiences);
     const handleDeleteEducation = (index: number) => {
         const newEducation = [...formik.values.experiences];
         newEducation.splice(index, 1);
@@ -116,7 +116,7 @@ export const ProfesionalExperience = ({ formik }: { formik: FormikProps<FieldsIn
                                     {exp.companyName}
                                 </Typography>
                                 <Typography variant="body2" fontStyle="italic" fontWeight={'bold'}>
-                                    {`${dayjs(exp.fromDate).locale(i18n.getLanguage()).format("MMMM, YYYY")} - ${dayjs(exp.toDate).locale(i18n.getLanguage()).format("MMMM, YYYY")}`}
+                                    {`${dayjs(exp.fromDate).locale(i18n.getLanguage()).format("MMMM, YYYY")} - ${exp.stillWorking ? i18n.present : dayjs(exp.toDate).locale(i18n.getLanguage()).format("MMMM, YYYY")}`}
                                 </Typography>
                                 <Typography variant="body1" >{exp.description}</Typography>
                             </Box>
@@ -137,38 +137,38 @@ export const ProfesionalExperience = ({ formik }: { formik: FormikProps<FieldsIn
             >
                 <Box
                     component="form"
-                    onSubmit={addEducationFormik.handleSubmit}
+                    onSubmit={addExperienceFormik.handleSubmit}
                     sx={{ p: 2, display: "flex", flexDirection: "column", gap: 2, width: 350 }}
                     noValidate
                 >
                     <TextField
                         label={i18n.jobTitle}
                         name="title"
-                        value={addEducationFormik.values.title}
-                        onChange={addEducationFormik.handleChange}
-                        onBlur={addEducationFormik.handleBlur}
-                        error={Boolean(addEducationFormik.touched.title && addEducationFormik.errors.title)}
-                        helperText={addEducationFormik.touched.title && addEducationFormik.errors.title}
+                        value={addExperienceFormik.values.title}
+                        onChange={addExperienceFormik.handleChange}
+                        onBlur={addExperienceFormik.handleBlur}
+                        error={Boolean(addExperienceFormik.touched.title && addExperienceFormik.errors.title)}
+                        helperText={addExperienceFormik.touched.title && addExperienceFormik.errors.title}
                         fullWidth
                     />
                     <TextField
                         label={i18n.enterprise}
                         name="companyName"
-                        value={addEducationFormik.values.companyName}
-                        onChange={addEducationFormik.handleChange}
-                        onBlur={addEducationFormik.handleBlur}
-                        error={Boolean(addEducationFormik.touched.companyName && addEducationFormik.errors.companyName)}
-                        helperText={addEducationFormik.touched.companyName && addEducationFormik.errors.companyName}
+                        value={addExperienceFormik.values.companyName}
+                        onChange={addExperienceFormik.handleChange}
+                        onBlur={addExperienceFormik.handleBlur}
+                        error={Boolean(addExperienceFormik.touched.companyName && addExperienceFormik.errors.companyName)}
+                        helperText={addExperienceFormik.touched.companyName && addExperienceFormik.errors.companyName}
                         fullWidth
                     />
                     <TextField
                         label={i18n.description}
                         name="description"
-                        value={addEducationFormik.values.description}
-                        onChange={addEducationFormik.handleChange}
-                        onBlur={addEducationFormik.handleBlur}
-                        error={Boolean(addEducationFormik.touched.description && addEducationFormik.errors.description)}
-                        helperText={addEducationFormik.touched.description && addEducationFormik.errors.description}
+                        value={addExperienceFormik.values.description}
+                        onChange={addExperienceFormik.handleChange}
+                        onBlur={addExperienceFormik.handleBlur}
+                        error={Boolean(addExperienceFormik.touched.description && addExperienceFormik.errors.description)}
+                        helperText={addExperienceFormik.touched.description && addExperienceFormik.errors.description}
                         multiline
                         rows={3}
                         fullWidth
@@ -176,16 +176,34 @@ export const ProfesionalExperience = ({ formik }: { formik: FormikProps<FieldsIn
 
                     <DatePicker
                         label={i18n.fromDate}
-                        value={addEducationFormik.values.fromDate}
+                        value={addExperienceFormik.values.fromDate}
                         disableFuture
-                        onChange={(date) => addEducationFormik.setFieldValue("fromDate", date)}
+                        onChange={(date) => addExperienceFormik.setFieldValue("fromDate", date)}
                     />
 
                     <DatePicker
                         label={i18n.toDate}
-                        value={addEducationFormik.values.toDate}
+                        value={addExperienceFormik.values.toDate}
                         disableFuture
-                        onChange={(date) => addEducationFormik.setFieldValue("toDate", date)}
+                        onChange={(date) => addExperienceFormik.setFieldValue("toDate", date)}
+                    />
+
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                name="stillWorking"
+                                checked={addExperienceFormik.values.toDate === null}
+                                value={addExperienceFormik.values.stillWorking}
+                                onChange={(e) => {
+                                    const checked = e.target.checked;
+                                    addExperienceFormik.setFieldValue("stillWorking", checked);
+                                    addExperienceFormik.setFieldValue("toDate", checked ? null : dayjs());
+
+                                }}
+                                onBlur={addExperienceFormik.handleBlur}
+                            />
+                        }
+                        label={i18n.stillWorking || "Actualmente trabajando"}
                     />
 
                     <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
@@ -194,12 +212,12 @@ export const ProfesionalExperience = ({ formik }: { formik: FormikProps<FieldsIn
                             color="inherit"
                             onClick={() => {
                                 setOpenAnchorEl(null);
-                                addEducationFormik.resetForm();
+                                addExperienceFormik.resetForm();
                             }}
                         >
                             {i18n.cancel || "Cancelar"}
                         </Button>
-                        <Button type="submit" variant="contained" disabled={!addEducationFormik.isValid} color="info">
+                        <Button type="submit" variant="contained" disabled={!addExperienceFormik.isValid} color="info">
                             {i18n.add || "Agregar"}
                         </Button>
                     </Box>

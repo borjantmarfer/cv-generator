@@ -13,6 +13,9 @@ export const i18n = new LocalizedStrings({
         description: 'Descripción',
         fromDate: 'Desde fecha',
         toDate: 'Hasta fecha',
+        stillWorking: 'Actualmente trabajando',
+        stillStudying: 'Actualmente estudiando',
+        present: 'Presente',
         toDateAfterFromDate: 'La fecha final debe ser posterior a la inicial',
         selectAColor: 'Selecciona un color',
 
@@ -57,6 +60,9 @@ export const i18n = new LocalizedStrings({
         description: 'Description',
         fromDate: 'From date',
         toDate: 'To date',
+        stillWorking: 'Still working',
+        stillStudying: 'Still studying',
+        present: 'Present',
         toDateAfterFromDate: 'The final date must be after the initial date',
         selectAColor: 'Select a color',
 

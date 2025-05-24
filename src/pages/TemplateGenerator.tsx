@@ -19,6 +19,7 @@ import { useDataContext } from '@/context/contextUtils';
 
 const validationSchema = yup.object({
     fullName: yup.string().required(i18n.required),
+    jobTitle: yup.string().required(i18n.required),
     phone: yup.string().required(i18n.required),
     email: yup.string().email(i18n.invalidEmail).required(i18n.required),
     address: yup.string().required(i18n.required),
@@ -38,8 +39,6 @@ export const TemplateGenerator = () => {
             saveData(values);
         },
     });
-
-
 
     return (
         <form onSubmit={formik.handleSubmit} style={{ width: '100%', height: '100%', position: 'relative' }}>

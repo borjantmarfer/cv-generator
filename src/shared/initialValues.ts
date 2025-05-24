@@ -6,6 +6,7 @@ export const initialFormValues: FieldsInterface = {
     phone: '',
     email: '',
     address: '',
+    jobTitle: '',
     about: '',
     education: [],
     skills: [],

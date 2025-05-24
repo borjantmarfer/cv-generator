@@ -6,22 +6,30 @@ export const serializeFormData = (data: FieldsInterface): FieldsInterface => ({
     ...data,
     education: data.education.map((ed: EducationInterface) => ({
         ...ed,
-        fromDate: typeof ed.fromDate === 'object' && 'toISOString' in ed.fromDate
-            ? ed.fromDate.toISOString()
-            : ed.fromDate,
-        toDate: typeof ed.toDate === 'object' && 'toISOString' in ed.toDate
-            ? ed.toDate.toISOString()
-            : ed.toDate,
-    } as unknown as EducationInterface)),
+        fromDate:
+            typeof ed.fromDate === 'object' && ed.fromDate !== null && 'toISOString' in ed.fromDate
+                ? ed.fromDate.toISOString()
+                : ed.fromDate,
+        toDate:
+            ed.toDate === null
+                ? null
+                : typeof ed.toDate === 'object' && 'toISOString' in ed.toDate
+                    ? ed.toDate.toISOString()
+                    : ed.toDate,
+    }) as unknown as EducationInterface),
     experiences: data.experiences.map((exp: ExperienceInterface) => ({
         ...exp,
-        fromDate: typeof exp.fromDate === 'object' && 'toISOString' in exp.fromDate
-            ? exp.fromDate.toISOString()
-            : exp.fromDate,
-        toDate: typeof exp.toDate === 'object' && 'toISOString' in exp.toDate
-            ? exp.toDate.toISOString()
-            : exp.toDate,
-    } as unknown as ExperienceInterface)),
+        fromDate:
+            typeof exp.fromDate === 'object' && exp.fromDate !== null && 'toISOString' in exp.fromDate
+                ? exp.fromDate.toISOString()
+                : exp.fromDate,
+        toDate:
+            exp.toDate === null
+                ? null
+                : typeof exp.toDate === 'object' && 'toISOString' in exp.toDate
+                    ? exp.toDate.toISOString()
+                    : exp.toDate,
+    }) as unknown as ExperienceInterface),
 });
 
 // Convertir string → Dayjs

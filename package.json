@@ -16,6 +16,7 @@
     "@mui/material": "^7.1.0",
     "@mui/x-date-pickers": "^8.4.0",
     "@react-pdf/renderer": "^4.3.0",
+    "color": "^5.0.0",
     "dayjs": "^1.11.13",
     "formik": "^2.4.6",
     "idb": "^8.0.3",

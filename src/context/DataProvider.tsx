@@ -31,10 +31,11 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
             const serializableData = serializeFormData(data);
             const result = await saveFormData(serializableData);
             if (result !== undefined && result !== null) {
+                setCurrentData(data);
                 if (data.id) {
-                    navigate(`templates`);
+                    navigate(`/generator/${result.id}/templates`);
                 } else {
-                    navigate(`${result.id}/template`);
+                    navigate(`/generator/${result.id}/templates`);
                 }
             } else {
                 console.log('Datos guardados en IndexedDB, pero no se recibió un ID.');
