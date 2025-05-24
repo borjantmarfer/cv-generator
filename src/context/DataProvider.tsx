@@ -9,6 +9,7 @@ import { DataContext } from "./contextUtils";
 
 export const DataProvider = ({ children }: { children: ReactNode }) => {
     const [currentData, setCurrentData] = useState<FieldsInterface>(initialFormValues);
+    const [firstIdData, setFirstIdData] = useState<FieldsInterface | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const params = useParams();
@@ -29,6 +30,9 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     const saveData = useCallback(async (data: FieldsInterface) => {
         try {
             const serializableData = serializeFormData(data);
+            console.log(" saveData - data:", data)
+            console.log('serializeFormData', serializeFormData(data))
+
             const result = await saveFormData(serializableData);
             if (result !== undefined && result !== null) {
                 setCurrentData(data);
@@ -45,11 +49,30 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [navigate]);
 
+    useEffect(() => {
+        const getFirstIdData = async () => {
+            try {
+                const firstData = await getFormDataById('1');
+                if (firstData) {
+                    const parsedData = deserializeFormData(firstData);
+                    setFirstIdData(parsedData);
+                } else {
+                    console.log('No se encontró ningún dato en IndexedDB.');
+                }
+            } catch (error) {
+                console.error('Error al obtener el primer ID de datos:', error);
+            }
+        }
+        getFirstIdData();
+    }
+        , []);
+
     const returnData = useMemo(() => ({
         currentData,
         setCurrentData,
         saveData,
-    }), [currentData, setCurrentData, saveData]);
+        firstIdData,
+    }), [currentData, setCurrentData, saveData, firstIdData]);
 
     if (isLoading) {
         return (

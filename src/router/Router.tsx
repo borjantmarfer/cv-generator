@@ -1,9 +1,9 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
-
+import { createBrowserRouter } from "react-router-dom";
 import { RootLayout } from "../layouts/RootLayout";
 import { Home } from "../pages/Home";
 import { TemplateGenerator } from "@/pages/TemplateGenerator";
 import { Template } from "@/pages/Template";
+import { NotFound } from "@/pages/NotFound";
 
 export const Router = createBrowserRouter([
     {
@@ -26,6 +26,6 @@ export const Router = createBrowserRouter([
     },
     {
         path: "*",
-        element: <Navigate to={'/'} />,
+        element: <NotFound />,
     },
 ]);

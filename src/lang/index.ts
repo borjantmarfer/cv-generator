@@ -2,9 +2,12 @@ import LocalizedStrings from "react-localization";
 
 export const i18n = new LocalizedStrings({
     es: {
+        cvs: 'Curriculums',
         generateCV: 'Generar CV',
         templates: 'Plantillas',
         selectTemplate: 'Selecciona una plantilla',
+
+        comeBack: 'Volver',
 
         add: 'Añadir',
         cancel: 'Cancelar',
@@ -42,6 +45,9 @@ export const i18n = new LocalizedStrings({
         enterprise: 'Empresa',
 
         //#region Error
+        notFoundDescription: 'No se encontró la página solicitada. Por favor, verifica la URL o vuelve a la página principal.',
+        notFoundTitle: 'Página no encontrada',
+
         required: 'Campo requerido',
         invalidEmail: 'Formato de correo electrónico incorrecto',
         //#endRegion
@@ -49,9 +55,12 @@ export const i18n = new LocalizedStrings({
         comingSoon: 'Próximamente',
     },
     en: {
+        cvs: 'Curriculums',
         generateCV: 'Generate CV',
         templates: 'Templates',
         selectTemplate: 'Select a template',
+
+        comeBack: 'Come back',
 
         add: 'Add',
         cancel: 'Cancel',
@@ -89,6 +98,9 @@ export const i18n = new LocalizedStrings({
         enterprise: 'Enterprise',
 
         //#region Error
+        notFoundDescription: 'The requested page was not found. Please check the URL or return to the main page.',
+        notFoundTitle: 'Page not found',
+
         required: 'Required field',
         invalidEmail: 'Invalid email format',
         //#endRegion

@@ -5,6 +5,7 @@ interface DataContextInterface {
     currentData: FieldsInterface;
     setCurrentData: (data: FieldsInterface) => void;
     saveData: (data: FieldsInterface) => Promise<void>;
+    firstIdData: FieldsInterface | null;
 }
 
 export const DataContext = createContext<DataContextInterface | null>(null);

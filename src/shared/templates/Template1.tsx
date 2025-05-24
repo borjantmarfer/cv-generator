@@ -133,7 +133,6 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
 
                 <View style={{
                     width: '100%',
-                    height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'flex-start',
@@ -237,11 +236,10 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                                     display: 'flex',
                                     flexDirection: 'column',
                                     gap: 10,
-                                    padding: 10,
                                 }}>
                                 {currentData.education.map((edu) => (
                                     <View key={crypto.randomUUID()} style={{ flexDirection: 'column', width: '100%' }}>
-                                        <Text style={styles.boldText}>• {edu.titulation}</Text>
+                                        <Text style={[styles.boldText, { paddingHorizontal: 10 }]}>• {edu.titulation}</Text>
                                         <Text style={styles.text}>{edu.description}</Text>
                                         <Text style={[styles.italicText, { textAlign: 'right' }]}>
                                             {`${dayjs(edu.fromDate).locale(i18n.getLanguage()).format(formatDate)} - ${dayjs(edu.toDate).locale(i18n.getLanguage()).format(formatDate)}`}
@@ -269,13 +267,12 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                             </View>
                             <View
                                 style={{
-                                    padding: 10,
                                     flexGrow: 1,
                                     flexDirection: 'column',
                                     gap: 10,
                                 }}>
                                 {currentData.skills.map((skill) => (
-                                    <Text style={styles.text}>• {skill}</Text>
+                                    <Text style={[styles.boldText, { paddingHorizontal: 10 }]}>• {skill}</Text>
                                 ))}
                             </View>
                         </View>
@@ -303,7 +300,6 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                                 display: 'flex',
                                 flexDirection: 'column',
                                 gap: 10,
-                                padding: 10,
                             }}
                         >
                             {currentData.experiences.map((exp) => (

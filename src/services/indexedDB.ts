@@ -1,5 +1,6 @@
 import { openDB } from 'idb';
 import type { FieldsInterface } from '@/shared/interfaces/FieldsInterface';
+import type { SerializedFields } from '@/shared/utils/formDataTransform';
 
 const DB_NAME = 'cv-generator';
 const STORE_NAME = 'formData';
@@ -14,7 +15,7 @@ export const getDB = async () => {
     });
 };
 
-export const saveFormData = async (data: FieldsInterface) => {
+export const saveFormData = async (data: SerializedFields) => {
     const db = await getDB();
     if (!data.id || data.id === '') {
         const allKeys = await db.getAllKeys(STORE_NAME);

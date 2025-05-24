@@ -36,6 +36,7 @@ export const TemplateGenerator = () => {
         initialValues: currentData,
         validationSchema,
         onSubmit: async (values) => {
+            console.log('TemplateGenerator - onSubmit - values:', values);
             saveData(values);
         },
     });
