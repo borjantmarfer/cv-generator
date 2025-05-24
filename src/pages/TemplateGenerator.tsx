@@ -3,24 +3,19 @@ import * as yup from 'yup';
 import { i18n } from '@/lang';
 import {
     Box,
-    CircularProgress,
     Grid,
     IconButton,
     Tooltip,
     darken,
 } from '@mui/material';
-import type { FieldsInterface } from '@/shared/interfaces/FieldsInterface';
 import { PersonalData } from './templateGenerator/PersonalData';
 import { Skills } from './templateGenerator/Skills';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ChevronRight } from '@mui/icons-material';
 import { Education } from './templateGenerator/Education';
 import { ProfesionalExperience } from './templateGenerator/ProfessionalExperience';
 import { LastConfig } from './templateGenerator/LastConfig';
-import { getFormDataById, saveFormData } from '@/services/indexedDB';
-import { deserializeFormData, serializeFormData } from '@/shared/utils/formDataTransform';
-import { useNavigate, useParams } from 'react-router-dom';
-import { initialFormValues } from '@/shared/initialValues';
+import { useDataContext } from '@/context/contextUtils';
 
 const validationSchema = yup.object({
     fullName: yup.string().required(i18n.required),
@@ -32,54 +27,19 @@ const validationSchema = yup.object({
 
 export const TemplateGenerator = () => {
     const [openNext, setOpenNext] = useState<boolean>(false);
-    const [initialValues, setInitialValues] = useState<FieldsInterface>(initialFormValues);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const params = useParams();
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const loadData = async () => {
-            const storedData = await getFormDataById(params.id || '');
-            if (storedData) {
-                const parsedData = deserializeFormData(storedData);
-                setInitialValues(parsedData);
-            }
-            setIsLoading(false);
-        };
-        loadData();
-    }, [params.id]);
+    const { currentData, saveData } = useDataContext();
 
     const formik = useFormik({
         enableReinitialize: true,
-        initialValues,
+        initialValues: currentData,
         validationSchema,
         onSubmit: async (values) => {
-            try {
-                const serializableData = serializeFormData(values);
-                const result = await saveFormData(serializableData);
-                if (result !== undefined && result !== null) {
-                    if (values.id) {
-                        navigate(`templates`);
-                    } else {
-                        navigate(`${result.id}/template`);
-                    }
-                } else {
-                    console.log('Datos guardados en IndexedDB, pero no se recibió un ID.');
-                }
-            } catch (error) {
-                console.error('Error al guardar datos en IndexedDB:', error);
-            }
+            saveData(values);
         },
     });
 
-    if (isLoading) {
-        return (
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
-                <CircularProgress color='primary' />
-            </Box>
-        );
-    }
+
 
     return (
         <form onSubmit={formik.handleSubmit} style={{ width: '100%', height: '100%', position: 'relative' }}>

@@ -1,61 +1,45 @@
-import type { FieldsInterface } from "@/shared/interfaces/FieldsInterface";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getFormDataById } from "@/services/indexedDB";
 import { ButtonBase, darken, Grid, Paper, Typography } from "@mui/material";
 import { i18n } from "@/lang";
 import * as templatesImg from '@/assets/templates';
 import ProcessImagotype from '@/assets/imagotypes/ProcessImagotype.svg';
-import { initialFormValues } from "@/shared/initialValues";
-import { PDFViewer } from "@react-pdf/renderer";
 import * as Templates from '@/shared/templates';
+import { useMemo, useState } from "react";
+import { PDFViewer } from "@react-pdf/renderer";
+import { useDataContext } from "@/context/contextUtils";
 
 const templateComponents = Object.values(Templates);
 
 const images = Object.values(templatesImg).filter((img) => typeof img === 'string') as string[];
 
 export const Template = () => {
-    const [initialValues, setInitialValues] = useState<FieldsInterface>(initialFormValues);
     const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
 
-    const params = useParams();
+    const { currentData } = useDataContext();
 
-    useEffect(() => {
-        const loadData = async () => {
-            const storedData = await getFormDataById(params.id || '');
-            if (storedData) {
-                setInitialValues(storedData);
-            }
-        };
-        loadData();
-    }
-        , [params.id]);
-
-    const getTemplate = () => {
+    const SelectedTemplateComponent = useMemo(() => {
         if (
-            selectedTemplate === null ||
-            selectedTemplate < 0 ||
-            selectedTemplate >= templateComponents.length
+            selectedTemplate !== null &&
+            selectedTemplate >= 0 &&
+            selectedTemplate < templateComponents.length
         ) {
-            setSelectedTemplate(null);
-            return null;
+            const TemplateComponent = templateComponents[selectedTemplate];
+            return (
+                <PDFViewer
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        border: 'none',
+                        backgroundColor: 'transparent',
+                    }}
+                >
+                    <TemplateComponent currentData={currentData} />
+                </PDFViewer>
+            );
         }
+        return null;
+    }, [selectedTemplate, currentData]);
 
-        const SelectedTemplate = templateComponents[selectedTemplate];
 
-        if (!SelectedTemplate) {
-            setSelectedTemplate(null);
-            return null;
-        }
-
-        return (
-            <PDFViewer
-                style={{ width: '100%', height: '100%' }}
-            >
-                <SelectedTemplate values={initialValues} />
-            </PDFViewer>
-        );
-    }
 
     return (
         <Grid container spacing={2} sx={(theme) => ({
@@ -124,9 +108,11 @@ export const Template = () => {
                         </Grid>
                     </Grid>
                 </Paper>
-            </Grid >
+            </Grid>
             <Grid size={{ xs: 12, md: 7 }}>
-                {selectedTemplate !== getTemplate() ? null : (
+                {SelectedTemplateComponent ? (
+                    SelectedTemplateComponent
+                ) : (
                     <Paper
                         sx={(theme) => ({
                             width: '100%',
