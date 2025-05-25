@@ -116,7 +116,7 @@ export const Template = () => {
                                         },
                                     })}
                                     onClick={() => xs ? handleDownloadCV(index) : setSelectedTemplate(index)}>
-                                    <img src={templateImg} alt={`Template ${index + 1}`} style={{ width: '100%' }} />
+                                    <img src={templateImg} alt={`Template ${index + 1}`} style={{ width: '100%', borderRadius: 4 }} />
                                 </ButtonBase>
                             </Grid>
                         ))}

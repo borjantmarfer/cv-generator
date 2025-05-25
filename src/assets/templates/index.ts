@@ -1,2 +1,2 @@
-import Template1 from './Captura.png';
+import Template1 from '/templates/Template1.webp';
 export { Template1 };

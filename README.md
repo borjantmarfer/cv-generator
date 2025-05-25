@@ -1,54 +1,51 @@
-# React + TypeScript + Vite
+# 📄 Generador de Currículums Profesional
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+¡Crea tu currículum ideal de forma rápida, intuitiva y personalizable!  
+Esta aplicación web te permite generar CVs modernos, personalizar plantillas, gestionar tu experiencia profesional y exportar resultados listos para compartir.
 
-Currently, two official plugins are available:
+## 🚀 Características Principales
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🎨 **Plantillas elegantes**: Elige entre diferentes estilos de CV.
+- 🧑‍💼 **Gestión de experiencias**: Añade estudios, habilidades y trabajos previos.
+- 🔐 **Privacidad total**: Tus datos se almacenan localmente con `IndexedDB`, sin servidores externos.
+- 🌐 **Soporte multilingüe**: Disponible en **español** e **inglés**.
+- 📤 **Exportación fácil**: Guarda tu CV en PDF o imprímelo directamente.
+- 📱 **Diseño responsive**: Totalmente adaptado para móviles y pantallas grandes.
+- 🧠 **Entrada por voz**: Rellena campos usando tu voz.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🧭 Rutas Principales
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+| Ruta                           | Componente                  | Descripción                                                                 |
+|--------------------------------|-----------------------------|-----------------------------------------------------------------------------|
+| `/`                            | `Home`                      | Página de bienvenida con acceso al generador de CVs.                        |
+| `/configurator/:id?`          | `TemplateConfigurator`      | Editor paso a paso para crear y personalizar tu CV.                         |
+| `/configurator/:id/templates` | `Template`                  | Selección visual de plantillas.                                             |
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🛠️ Tecnologías Usadas
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+- ⚛️ **React** + **React Router DOM**
+- 💅 **Material UI (MUI)** para estilos consistentes y responsivos
+- 🧩 **Day.js** para manejo de fechas multilingüe
+- 🌍 **react-localization** para traducciones dinámicas
+- 🗂️ **Context API** para el manejo de datos compartidos
+- 🧠 **IndexedDB** para almacenamiento local seguro (¡sin servidores ni rastreos!)
+  > Todos tus datos se guardan directamente en tu navegador. Nadie más los ve.
+  
+---
+
+## 📦 Instalación y Uso
+
+```bash
+# Clona el repositorio
+git clone https://github.com/tu-usuario/cv-generator.git
+cd cv-generator
+
+# Instala dependencias
+npm install
+
+# Inicia el servidor de desarrollo
+npm run dev
