@@ -169,5 +169,5 @@ export const Template = () => {
                 </Grid>
             )}
         </Grid >
-    ), [xs, SelectedTemplateComponent, handleDownloadCV]);
+    ), [xs, currentData.id, navigate, SelectedTemplateComponent, handleDownloadCV]);
 }
