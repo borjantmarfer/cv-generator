@@ -7,6 +7,8 @@ import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import "dayjs/locale/es";
+import "dayjs/locale/en";
 
 const theme = createTheme({
   palette: {

@@ -3,9 +3,10 @@ import { SketchPicker } from 'react-color';
 import type { FormikProps } from "formik";
 import type { FieldsInterface } from "@/shared/interfaces/FieldsInterface";
 import { i18n } from "@/lang";
+import { useMemo } from "react";
 
 export const LastConfig = ({ formik }: { formik: FormikProps<FieldsInterface> }) => {
-    return (
+    return useMemo(() => (
         <Box sx={(theme) => ({
             height: '100%',
             display: 'flex',
@@ -61,5 +62,5 @@ export const LastConfig = ({ formik }: { formik: FormikProps<FieldsInterface> })
                 {i18n.generateCV}
             </Button>
         </Box>
-    );
+    ), [formik]);
 };

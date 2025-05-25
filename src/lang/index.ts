@@ -8,6 +8,7 @@ export const i18n = new LocalizedStrings({
         selectTemplate: 'Selecciona una plantilla',
 
         comeBack: 'Volver',
+        comeBackConfigurator: 'Volver al configurador',
 
         add: 'Añadir',
         cancel: 'Cancelar',
@@ -61,6 +62,7 @@ export const i18n = new LocalizedStrings({
         selectTemplate: 'Select a template',
 
         comeBack: 'Come back',
+        comeBackConfigurator: 'Return to the configurator',
 
         add: 'Add',
         cancel: 'Cancel',

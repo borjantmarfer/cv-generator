@@ -1,27 +1,25 @@
 import { Box, Button, Typography, useMediaQuery } from "@mui/material";
-import NotFoundImagotype from '@/assets/imagotypes/404NotFound.svg'
 import { i18n } from "@/lang";
+import FeatureImagotype from '@/assets/imagotypes/ProcessImagotype.svg';
 import { useNavigate } from "react-router-dom";
 import { useMemo } from 'react';
 
-export const NotFound = () => {
+export const ComingSoon = () => {
     const navigate = useNavigate();
 
     const xs = useMediaQuery('(max-width: 600px)');
 
-    return useMemo(() => (
+    const content = useMemo(() => (
         <Box sx={(theme) => ({
-            width: '100dvw',
-            height: '100dvh',
+            flexGrow: 1,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             gap: theme.spacing(2),
         })}>
-            <img src={NotFoundImagotype} alt="404 Not Found" style={{ width: xs ? '80%' : '20%' }} />
-            <Typography variant="h4" fontWeight={'bold'} sx={{ textAlign: 'center' }}>{i18n.notFoundTitle}</Typography>
-            <Typography variant="body1" sx={{ textAlign: 'center' }}>{i18n.notFoundDescription}</Typography>
+            <img src={FeatureImagotype} alt="404 Not Found" style={{ width: xs ? '80%' : '20%' }} />
+            <Typography variant="h4" fontWeight={'bold'} sx={{ textAlign: 'center' }}>{i18n.comingSoon}</Typography>
             <Button
                 variant="contained"
                 color="primary"
@@ -33,4 +31,5 @@ export const NotFound = () => {
         </Box>
     ), [navigate, xs]);
 
+    return content;
 }

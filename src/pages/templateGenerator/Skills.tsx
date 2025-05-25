@@ -10,14 +10,14 @@ import {
     Typography,
 } from "@mui/material";
 import type { FormikProps } from "formik";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import SendIcon from '@mui/icons-material/Send';
-import { Cancel } from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
 
 export const Skills = ({ formik }: { formik: FormikProps<FieldsInterface> }) => {
     const [newSkill, setNewSkill] = useState("");
 
-    const handleAddSkill = () => {
+    const handleAddSkill = useCallback(() => {
         const trimmed = newSkill.trim();
         if (!trimmed) return;
 
@@ -26,22 +26,22 @@ export const Skills = ({ formik }: { formik: FormikProps<FieldsInterface> }) => 
         }
 
         setNewSkill("");
-    };
+    }, [newSkill, formik])
 
-    const handleDeleteSkill = (indexToDelete: number) => {
+    const handleDeleteSkill = useCallback((indexToDelete: number) => {
         const updatedSkills = formik.values.skills.filter(
             (_, index) => index !== indexToDelete
         );
         formik.setFieldValue("skills", updatedSkills);
-    };
+    }, [formik])
 
-    const handleEditSkill = (index: number) => {
+    const handleEditSkill = useCallback((index: number) => {
         const skill = formik.values.skills[index];
         setNewSkill(skill);
         handleDeleteSkill(index);
-    };
+    }, [formik, handleDeleteSkill])
 
-    return (
+    return useMemo(() => (
         <Paper
             sx={(theme) => ({
                 width: "100%",
@@ -125,10 +125,10 @@ export const Skills = ({ formik }: { formik: FormikProps<FieldsInterface> }) => 
                             {skill}
                         </Typography>
 
-                        <Cancel />
+                        <Edit fontSize="small" />
                     </ButtonBase>
                 ))}
             </Box>
         </Paper>
-    );
+    ), [formik.values.skills, handleAddSkill, handleEditSkill, newSkill])
 };

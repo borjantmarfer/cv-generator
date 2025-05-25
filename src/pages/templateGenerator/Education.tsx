@@ -18,11 +18,12 @@ import {
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import type { FormikProps } from "formik";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import dayjs from "dayjs";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { formatDateLocalized } from "@/shared/utils/dayjsUtils";
+import dayjs from "dayjs";
 
 export const Education = ({ formik }: { formik: FormikProps<FieldsInterface> }) => {
     const [openAnchorEl, setOpenAnchorEl] = useState<HTMLElement | null>(null);
@@ -56,13 +57,13 @@ export const Education = ({ formik }: { formik: FormikProps<FieldsInterface> }) 
         },
     });
 
-    const handleDeleteEducation = (index: number) => {
+    const handleDeleteEducation = useCallback((index: number) => {
         const newEducation = [...formik.values.education];
         newEducation.splice(index, 1);
         formik.setFieldValue("education", newEducation);
-    };
+    }, [formik]);
 
-    return (
+    return useMemo(() => (
         <Box sx={(theme) => ({
             maxHeight: '100%',
             height: '100%',
@@ -118,7 +119,7 @@ export const Education = ({ formik }: { formik: FormikProps<FieldsInterface> }) 
                                     </IconButton>
                                 </Tooltip>
                                 <Typography variant="body2" fontStyle="italic" fontWeight={'bold'}>
-                                    {`${dayjs(edu.fromDate).locale(i18n.getLanguage()).format("MMMM, YYYY")} - ${edu.stillStudying ? i18n.present : dayjs(edu.toDate).locale(i18n.getLanguage()).format("MMMM, YYYY")}`}
+                                    {`${formatDateLocalized(edu.fromDate)} - ${edu.stillStudying ? i18n.present : formatDateLocalized(edu.toDate)}`}
                                 </Typography>
                                 <Typography variant="body1" >{edu.description}</Typography>
                             </Box>
@@ -215,5 +216,5 @@ export const Education = ({ formik }: { formik: FormikProps<FieldsInterface> }) 
                 </Box>
             </Popover>
         </Box>
-    );
+    ), [formik.values.education, openAnchorEl, addEducationFormik, handleDeleteEducation]);
 };

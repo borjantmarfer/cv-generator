@@ -3,6 +3,7 @@ import { Avatar, Box, IconButton, styled, Tooltip } from "@mui/material"
 import type { FormikProps } from "formik";
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { i18n } from "@/lang";
+import { useCallback, useMemo } from "react";
 
 const HiddenInput = styled('input')({
     display: 'none',
@@ -10,7 +11,7 @@ const HiddenInput = styled('input')({
 
 export const UploadImg = ({ formik }: { formik: FormikProps<FieldsInterface> }) => {
 
-    const handleLoadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleLoadImage = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
             const reader = new FileReader();
@@ -20,9 +21,9 @@ export const UploadImg = ({ formik }: { formik: FormikProps<FieldsInterface> }) 
             };
             reader.readAsDataURL(file);
         }
-    };
+    }, [formik]);
 
-    return (
+    return useMemo(() => (
         <Box sx={{ position: 'relative', width: 200, height: 200 }}>
             <Avatar
                 src={formik.values.img}
@@ -51,5 +52,5 @@ export const UploadImg = ({ formik }: { formik: FormikProps<FieldsInterface> }) 
                 </label>
             </Box>
         </Box>
-    )
+    ), [formik.values.img, handleLoadImage])
 }

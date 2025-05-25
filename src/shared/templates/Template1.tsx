@@ -4,12 +4,11 @@ import type { FieldsInterface } from "../interfaces/FieldsInterface";
 import { i18n } from "@/lang";
 import { useTheme } from "@mui/material";
 import { getLightVersionColor } from "../utils/colorUtils";
-import dayjs from "dayjs";
-
 import RobotoRegular from '/fonts/Roboto/Roboto-Regular.ttf';
 import RobotoBold from '/fonts/Roboto/Roboto-Bold.ttf';
 import RobotoItalic from '/fonts/Roboto/Roboto-Italic.ttf';
 import RobotoBoldItalic from '/fonts/Roboto/Roboto-BoldItalic.ttf';
+import { formatDateLocalized } from "../utils/dayjsUtils";
 
 Font.register({
     family: 'Roboto',
@@ -49,14 +48,12 @@ const styles = StyleSheet.create({
     }
 })
 
-const formatDate = "MMMM YYYY";
-
 export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => {
 
     const theme = useTheme();
 
     const primaryColor = currentData.mainColor;
-    const primaryColorLight = getLightVersionColor(primaryColor);
+    const primaryColorLight = getLightVersionColor(currentData.mainColor);
 
     return useMemo(() => (
         <Document
@@ -126,7 +123,6 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                         bottom: 0,
                         height: 20,
                         backgroundColor: primaryColor,
-                        borderRadius: 5,
                         zIndex: 10,
                     }}
                     fixed
@@ -153,13 +149,9 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                                 aspectRatio: 1,
                                 borderRadius: 9999,
                                 overflow: 'hidden',
-                                borderWidth: 8,
-                                borderColor: '#fff',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                padding: 0,
-                                gap: 15,
+                                backgroundColor: '#fff',
+                                padding: 8,
+                                paddingBottom: 0,
                             }}
                         >
                             <Image
@@ -246,7 +238,7 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                                         <Text style={[styles.boldText, { paddingHorizontal: 10 }]}>• {edu.titulation}</Text>
                                         <Text style={styles.text}>{edu.description}</Text>
                                         <Text style={[styles.italicText, { textAlign: 'right' }]}>
-                                            {`${dayjs(edu.fromDate).locale(i18n.getLanguage()).format(formatDate)} - ${dayjs(edu.toDate).locale(i18n.getLanguage()).format(formatDate)}`}
+                                            {`${formatDateLocalized(edu.fromDate)} - ${edu.stillStudying ? i18n.present : formatDateLocalized(edu.toDate)}`}
                                         </Text>
                                     </View>
                                 ))}
@@ -275,7 +267,7 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                                 style={{
                                     flexGrow: 1,
                                     flexDirection: 'column',
-                                    gap: 10,
+                                    gap: 5,
                                 }}>
                                 {currentData.skills.map((skill) => (
                                     <Text style={[styles.boldText, { paddingHorizontal: 10 }]}>• {skill}</Text>
@@ -310,7 +302,9 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                             }}
                         >
                             {currentData.experiences.map((exp) => (
-                                <View key={crypto.randomUUID()}
+                                <View
+                                    key={crypto.randomUUID()}
+                                    wrap={false}
                                     style={{
                                         width: '100%',
                                         display: 'flex',
@@ -318,7 +312,8 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                                         gap: 5,
                                         borderBottomWidth: 2,
                                         borderBottomColor: primaryColor,
-                                    }}>
+                                    }}
+                                >
                                     <View
                                         style={{
                                             width: '100%',
@@ -326,9 +321,12 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                                             flexDirection: 'row',
                                             justifyContent: 'space-between',
                                             alignItems: 'center',
-                                        }}>
+                                        }}
+                                    >
                                         <Text style={styles.boldText}>{exp.title}</Text>
-                                        <Text style={styles.italicBoldText}>{`${exp.companyName}, ${dayjs(exp.fromDate).locale(i18n.getLanguage()).format(formatDate)} - ${exp.stillWorking ? i18n.present : dayjs(exp.toDate).locale(i18n.getLanguage()).format(formatDate)}`}</Text>
+                                        <Text style={styles.italicBoldText}>
+                                            {`${exp.companyName}, ${formatDateLocalized(exp.fromDate)} - ${exp.stillWorking ? i18n.present : formatDateLocalized(exp.toDate)}`}
+                                        </Text>
                                     </View>
                                     <Text style={styles.text}>{exp.description}</Text>
                                 </View>
@@ -337,6 +335,6 @@ export const Template1 = ({ currentData }: { currentData: FieldsInterface }) => 
                     </View>
                 </View>
             </Page>
-        </Document>
+        </Document >
     ), [currentData, primaryColor, primaryColorLight, theme.palette]);
 }

@@ -1,11 +1,13 @@
-import { ButtonBase, darken, Grid, Paper, Typography } from "@mui/material";
+import { Box, ButtonBase, darken, Grid, IconButton, Paper, Tooltip, Typography, useMediaQuery } from "@mui/material";
 import { i18n } from "@/lang";
 import * as templatesImg from '@/assets/templates';
 import ProcessImagotype from '@/assets/imagotypes/ProcessImagotype.svg';
 import * as Templates from '@/shared/templates';
-import { useMemo, useState } from "react";
-import { PDFViewer } from "@react-pdf/renderer";
+import { useCallback, useMemo, useState } from "react";
+import { pdf, PDFViewer } from "@react-pdf/renderer";
 import { useDataContext } from "@/context/contextUtils";
+import { ArrowBack } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const templateComponents = Object.values(Templates);
 
@@ -13,6 +15,9 @@ const images = Object.values(templatesImg).filter((img) => typeof img === 'strin
 
 export const Template = () => {
     const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
+
+    const xs = useMediaQuery('(max-width: 600px)');
+    const navigate = useNavigate();
 
     const { currentData } = useDataContext();
 
@@ -39,13 +44,37 @@ export const Template = () => {
         return null;
     }, [selectedTemplate, currentData]);
 
+    const handleDownloadCV = useCallback(async (index: number) => {
+        if (
+            index >= 0 &&
+            index < templateComponents.length &&
+            currentData.fullName &&
+            currentData
+        ) {
+            const TemplateComponent = templateComponents[index];
 
+            const doc = <TemplateComponent currentData={currentData} />;
 
-    return (
+            try {
+                const blob = await pdf(doc).toBlob();
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `CV_${currentData.fullName.replace(/\s+/g, '_')}.pdf`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error("Error generating PDF:", error);
+            }
+        }
+    }, [currentData]);
+
+    return useMemo(() => (
         <Grid container spacing={2} sx={(theme) => ({
             padding: theme.spacing(2),
-            width: '100%',
-            height: '100%',
+            flexGrow: 1
         })}>
             <Grid size={{ xs: 12, md: 5 }}>
                 <Paper
@@ -56,8 +85,18 @@ export const Template = () => {
                         flexDirection: 'column',
                         gap: theme.spacing(1),
                     })}>
-                    <Typography variant="h6" fontWeight={'bold'}>{i18n.templates}</Typography>
-
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                    }}>
+                        <Typography variant="h6" fontWeight={'bold'}>{i18n.templates}</Typography>
+                        <Tooltip title={i18n.comeBackConfigurator}>
+                            <IconButton onClick={() => navigate(`/configurator/${currentData.id}`)}>
+                                <ArrowBack />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
                     <Grid container spacing={2} sx={{ flexWrap: 'wrap', width: '100%', height: '100%' }}>
                         {images.map((templateImg: string, index: number) => (
                             <Grid size={{ xs: 12, md: 4 }} key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -76,7 +115,7 @@ export const Template = () => {
                                             backgroundColor: darken(theme.palette.background.paper, 0.1),
                                         },
                                     })}
-                                    onClick={() => setSelectedTemplate(index)}>
+                                    onClick={() => xs ? handleDownloadCV(index) : setSelectedTemplate(index)}>
                                     <img src={templateImg} alt={`Template ${index + 1}`} style={{ width: '100%' }} />
                                 </ButtonBase>
                             </Grid>
@@ -109,24 +148,26 @@ export const Template = () => {
                     </Grid>
                 </Paper>
             </Grid>
-            <Grid size={{ xs: 12, md: 7 }}>
-                {SelectedTemplateComponent ? (
-                    SelectedTemplateComponent
-                ) : (
-                    <Paper
-                        sx={(theme) => ({
-                            width: '100%',
-                            height: '100%',
-                            padding: theme.spacing(2, 4),
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        })}
-                    >
-                        <Typography variant="h6" fontWeight={'bold'}>{i18n.selectTemplate}</Typography>
-                    </Paper>
-                )}
-            </Grid>
+            {!xs && (
+                <Grid size={{ xs: 12, md: 7 }}>
+                    {SelectedTemplateComponent ? (
+                        SelectedTemplateComponent
+                    ) : (
+                        <Paper
+                            sx={(theme) => ({
+                                width: '100%',
+                                height: '100%',
+                                padding: theme.spacing(2, 4),
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            })}
+                        >
+                            <Typography variant="h6" fontWeight={'bold'}>{i18n.selectTemplate}</Typography>
+                        </Paper>
+                    )}
+                </Grid>
+            )}
         </Grid >
-    );
+    ), [xs, SelectedTemplateComponent, handleDownloadCV]);
 }

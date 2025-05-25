@@ -37,9 +37,9 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
             if (result !== undefined && result !== null) {
                 setCurrentData(data);
                 if (data.id) {
-                    navigate(`/generator/${result.id}/templates`);
+                    navigate(`/configurator/${result.id}/templates`);
                 } else {
-                    navigate(`/generator/${result.id}/templates`);
+                    navigate(`/configurator/${result.id}/templates`);
                 }
             } else {
                 console.log('Datos guardados en IndexedDB, pero no se recibió un ID.');

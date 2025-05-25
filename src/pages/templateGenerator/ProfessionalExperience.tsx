@@ -18,11 +18,12 @@ import {
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import type { FormikProps } from "formik";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import dayjs from "dayjs";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { formatDateLocalized } from "@/shared/utils/dayjsUtils";
+import dayjs from "dayjs";
 
 export const ProfesionalExperience = ({ formik }: { formik: FormikProps<FieldsInterface> }) => {
     const [openAnchorEl, setOpenAnchorEl] = useState<HTMLElement | null>(null);
@@ -50,14 +51,14 @@ export const ProfesionalExperience = ({ formik }: { formik: FormikProps<FieldsIn
             addExperienceFormik.resetForm();
         },
     });
-    console.log(formik.values.experiences);
-    const handleDeleteEducation = (index: number) => {
+
+    const handleDeleteExperience = useCallback((index: number) => {
         const newEducation = [...formik.values.experiences];
         newEducation.splice(index, 1);
         formik.setFieldValue("experiences", newEducation);
-    };
+    }, [formik])
 
-    return (
+    return useMemo(() => (
         <Box sx={(theme) => ({
             maxHeight: '100%',
             height: '100%',
@@ -107,7 +108,7 @@ export const ProfesionalExperience = ({ formik }: { formik: FormikProps<FieldsIn
                             })}>
                                 <Tooltip title={i18n.removeProfessionalExperience}>
                                     <IconButton
-                                        onClick={() => handleDeleteEducation(index)}
+                                        onClick={() => handleDeleteExperience(index)}
                                         sx={{ position: "absolute", top: 2, right: 0 }}>
                                         <Delete />
                                     </IconButton>
@@ -116,7 +117,7 @@ export const ProfesionalExperience = ({ formik }: { formik: FormikProps<FieldsIn
                                     {exp.companyName}
                                 </Typography>
                                 <Typography variant="body2" fontStyle="italic" fontWeight={'bold'}>
-                                    {`${dayjs(exp.fromDate).locale(i18n.getLanguage()).format("MMMM, YYYY")} - ${exp.stillWorking ? i18n.present : dayjs(exp.toDate).locale(i18n.getLanguage()).format("MMMM, YYYY")}`}
+                                    {`${formatDateLocalized(exp.fromDate)} - ${exp.stillWorking ? i18n.present : formatDateLocalized(exp.toDate)}`}
                                 </Typography>
                                 <Typography variant="body1" >{exp.description}</Typography>
                             </Box>
@@ -224,5 +225,5 @@ export const ProfesionalExperience = ({ formik }: { formik: FormikProps<FieldsIn
                 </Box>
             </Popover>
         </Box>
-    );
+    ), [formik.values.experiences, openAnchorEl, addExperienceFormik, handleDeleteExperience])
 };

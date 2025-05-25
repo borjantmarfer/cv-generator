@@ -22,8 +22,13 @@ export const SpeechRecognitionTextField = (props: TextFieldProps) => {
     const recognitionRef = useRef<SpeechRecognition | null>(null);
 
     useEffect(() => {
+        interface SpeechRecognitionWindow extends Window {
+            SpeechRecognition?: typeof window.SpeechRecognition;
+            webkitSpeechRecognition?: typeof window.SpeechRecognition;
+        }
         const SpeechRecognition =
-            (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+            (window as SpeechRecognitionWindow).SpeechRecognition ||
+            (window as SpeechRecognitionWindow).webkitSpeechRecognition;
 
         if (!SpeechRecognition) {
             console.warn("Web Speech API no es compatible con este navegador.");
@@ -85,17 +90,27 @@ export const SpeechRecognitionTextField = (props: TextFieldProps) => {
             </Tooltip>
             <TextField
                 {...props}
+                multiline
+                minRows={4}
                 sx={{
                     width: "100%",
                     flexGrow: 1,
+                    overflow: "auto",
                     '.MuiInputBase-root': {
                         height: '100%',
                         alignItems: 'flex-start',
+                        overflow: 'auto',
                     },
                     '.MuiInputBase-input': {
                         height: '100% !important',
                         overflow: 'auto',
+                        whiteSpace: 'pre-wrap',
+                        wordBreak: 'break-word',
+                        boxSizing: 'border-box',
                     },
+                    '& .MuiFormLabel-root': {
+                        marginTop: '6px'
+                    }
                 }}
             />
         </Box>

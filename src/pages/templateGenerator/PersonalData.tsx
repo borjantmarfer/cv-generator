@@ -4,11 +4,12 @@ import { UploadImg } from "@/shared/components/ui/UploadImg"
 import type { FieldsInterface } from "@/shared/interfaces/FieldsInterface"
 import { Box, Paper, TextField, Typography } from "@mui/material"
 import type { FormikProps } from "formik"
+import { useMemo } from "react"
 
 
 export const PersonalData = ({ formik }: { formik: FormikProps<FieldsInterface> }) => {
 
-    return (
+    return useMemo(() => (
         <Paper sx={(theme) => ({
             width: '100%',
             height: '100%',
@@ -18,9 +19,9 @@ export const PersonalData = ({ formik }: { formik: FormikProps<FieldsInterface> 
             gap: theme.spacing(2)
         })}>
             <Typography variant="h5" sx={{ fontWeight: 'bold' }}>{i18n.personalData}</Typography>
-            <Box sx={(theme) => ({ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: theme.spacing(2) })}>
+            <Box sx={(theme) => ({ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'center', alignItems: 'center', gap: theme.spacing(2) })}>
                 <UploadImg formik={formik} />
-                <Box sx={(theme) => ({ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: theme.spacing(2) })}>
+                <Box sx={(theme) => ({ flexGrow: 1, width: { xs: '100%', md: 'auto' }, display: 'flex', flexDirection: 'column', gap: theme.spacing(2) })}>
                     <TextField
                         name="fullName"
                         label={i18n.fullName}
@@ -33,7 +34,7 @@ export const PersonalData = ({ formik }: { formik: FormikProps<FieldsInterface> 
                         helperText={formik.touched.fullName && formik.errors.fullName}
                     />
 
-                    <Box sx={(theme) => ({ width: '100%', display: 'flex', gap: theme.spacing(2) })}>
+                    <Box sx={(theme) => ({ width: '100%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: theme.spacing(2) })}>
                         <TextField
                             name="phone"
                             label={i18n.phone}
@@ -54,7 +55,7 @@ export const PersonalData = ({ formik }: { formik: FormikProps<FieldsInterface> 
                             onBlur={formik.handleBlur}
                             error={formik.touched.email && Boolean(formik.errors.email)}
                             helperText={formik.touched.email && formik.errors.email}
-                            sx={{ width: '80%' }}
+                            sx={{ width: { xs: '100%', md: '80%' } }}
                         />
                     </Box>
                     <TextField
@@ -95,6 +96,16 @@ export const PersonalData = ({ formik }: { formik: FormikProps<FieldsInterface> 
                 helperText={formik.touched.about && formik.errors.about}
                 sx={{ flexGrow: 1, height: '100%' }}
             />
-        </Paper>
-    )
+        </Paper >
+    ), [
+        formik.values.img,
+        formik.values.about,
+        formik.values.address,
+        formik.values.email,
+        formik.values.fullName,
+        formik.values.jobTitle,
+        formik.values.phone,
+        formik.touched,
+        formik.errors
+    ]);
 }
